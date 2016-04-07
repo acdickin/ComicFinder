@@ -1,0 +1,4 @@
+api_key
+e1908ee4b6f3ad83d084c165ef0f146caeab6632
+
+http://comicvine.gamespot.com/api/
