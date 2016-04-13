@@ -1,0 +1,77 @@
+#bottom{
+	background-color: black;
+	}
+img {
+    display: block;
+    margin: 0 auto;
+}
+.carousel-inner .active.left  { left: -33%;             }
+.carousel-inner .active.right { left: 33%;              }
+.carousel-inner .next         { left: 33%               }
+.carousel-inner .prev         { left: -33%              }
+.carousel-control.left        { background-image: none; }
+.carousel-control.right       { background-image: none; }
+.carousel-inner .item         { background: white;      }
+
+.carosel-inner {
+  white-space: nowrap;
+  overflow: hidden;
+  font-size: 0;
+}
+.carosel-item {
+  display: inline-block;
+}
+
+.center_div{
+    margin: 0 auto;
+    width:80% /* value of your choice which suits your alignment */
+}
+
+h1{
+     word-wrap: break-word;
+     -webkit-hyphens: auto;
+     -moz-hyphens: auto;
+     -ms-hyphens: auto;
+     -o-hyphens: auto;
+     hyphens: auto;
+}
+h2{
+     word-wrap: break-word;
+     -webkit-hyphens: auto;
+     -moz-hyphens: auto;
+     -ms-hyphens: auto;
+     -o-hyphens: auto;
+     hyphens: auto;
+}
+
+@media screen and (max-width: 768px) {
+    h1{
+        font-size:20px;
+    }
+	h2{
+		font-size:18px;
+	}
+	input.text{
+		length:30;
+		
+	}
+	
+}
+
+.fun{
+	margin-top:40px;
+	border: none;
+    border: 5px solid rgba(0,0,0,0.75);
+    border-radius: 5px;
+    box-shadow: inset 5px 5px 5px #CCC;
+	
+	
+}
+.center {
+    text-align:center;
+}
+
+.center form {
+    display:inline-block;
+}
+

@@ -1,9 +1,21 @@
 <!DOCTYPE html>
-<?php
+	<?php
+		$dbconn = pg_connect("host=localhost dbname=Comics_db user=Andrew password=Cloudy88!")
+		or die('Could not connect: ' . pg_last_error());
+	?>
 
-include("classes/dbconnection.php");
-$DBConnection = new DBConnection();
-?>
+	<script>
+		var ComicVineClient = require('comicvine');
+
+		var client = new ComicVineClient({
+			apikey: "40ffdec6b2f84ffa415b5f24d289175ae907a6a1",
+			apiUrl: "http://api.comicvine.com",
+			cache: 'redis',
+			host: "192.168.56.2",
+			port: 6379,
+		});
+	</script>
+
 <html lang="en">
 
 <head>
@@ -17,7 +29,8 @@ $DBConnection = new DBConnection();
     <title>Comic Finder</title>
 
     <!-- Bootstrap Core CSS -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/bootstrap.css" rel="stylesheet">
+	 <link href="css/mystyle.css" rel="stylesheet">
 
     <!-- Custom CSS -->
     <style>
@@ -43,17 +56,19 @@ $DBConnection = new DBConnection();
         <div class="container">
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" >
                     <span class="sr-only">Toggle navigation</span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
-                    <span class="icon-bar">t</span>
+                    <span class="icon-bar"></span>
+					
                 </button>
+				
                 <a class="navbar-brand" href="#"> COMIC FINDER</a>
             </div>
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav">
+                <ul class="nav navbar-nav navbar-left">
                     <li>
                         <a href="#">About</a>
                     </li>
@@ -63,54 +78,59 @@ $DBConnection = new DBConnection();
                     <li>
                         <a href="#">Contact</a>
                     </li>
-                </ul>
+				</ul>	
+				<ul class="nav navbar-nav navbar-right">
+					<li>
+						<a href="#">Sign in</a>
+					</li>
+				</ul>
+                
+				
             </div>
             <!-- /.navbar-collapse -->
         </div>
         <!-- /.container -->
     </nav>
 
-    <!-- Page Content -->
-    <div class="container">
 
-        <div class="row">
-            
-			
-			
-			<div class="col-lg-5 ">
-                <h1>Welcome to Comic Finder</h1>
-               
-                
-            </div>
-			<div class="col-lg-5">
-			 <p class="lead">Find a new comic, find out more info about your favorites or discover a new one!</p>
-			</div>
-			<div class="col-lg-2">
-				<ul>
-				
-				<?php
-				$sql="select * from login order by lastname";
-						foreach ($DBConnetion ->query($sql) as $row{
-					
-						print <li>$row['firstname']+" ";
-						print <li>$row['lastname'] +"<br>";
-						print <li>$row['login'] \n \n ;
-					
-						}
-					
-				
-			
-				?>
-			</ul>
-			
-			</div>
-		</div>
-        <!-- /.row -->
 
-    </div>
+
+<p>Please enter character you would like to search for : <input type="text" id="char"/><br></p>
+
+
+<button onclick="who()">Click me</button>
+
+<p id="hero"></p>
+<script>
+function who(){
+document.getbyid("id").
+
+
+}
+
+
+
+
+
+</script>
+
+<!-- grabs character info-->
+	<script>
+		var firstname= document.getElementById("char").value;
+		var searchCollection = new client.Search("char","character");
+		var real
+		//Now searchCollection is a regular paginated collection. You can set pageSize, use .fetch(), .fetchNextPage()...
+		searchCollection.fetchAll({
+			success: function(results) {
+				var character = results.where({"name": "char"})[0];
+			   var real =character.get("real_name") );
+			}
+		})
+	</script>
+
     <!-- /.container -->
-	<div class="navbar navbar-fixed-bottom text-center">
-		<p class= "text-muted">Designed with you in mind</p>
+	<div  id= "bottom" class="navbar navbar-fixed-bottom text-center" >
+		<p > <!--class-= "text-muted"--> Designed with you in mind</p>
 	</div>
     <!-- jQuery Version 1.11.1 -->
     <script src="js/jquery.js"></script>
@@ -121,3 +141,4 @@ $DBConnection = new DBConnection();
 </body>
 
 </html>
+

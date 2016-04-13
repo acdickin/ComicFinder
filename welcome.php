@@ -2,7 +2,6 @@
 <?php
 
 require ("classes/config.php");
-
 ?>
 <html lang="en">
 
@@ -11,7 +10,7 @@ require ("classes/config.php");
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
+    <meta name="description" content="Welcome">
     <meta name="author" content="">
 
     <title>Comic Finder</title>
@@ -69,7 +68,11 @@ require ("classes/config.php");
 				</ul>	
 				<ul class="nav navbar-nav navbar-right">
 					<li>
-						<a href="login.php">Sign in</a>
+						<?php
+							session_start();
+							$fullname = $_SESSION['name'];
+						?>
+						<a href="#">Welcome back <?php echo $fullname; ?></a>
 					</li>
 				</ul>
                 
@@ -83,58 +86,48 @@ require ("classes/config.php");
 	
 	
 	
-	
-<div class="col-md-6 col-md-offset-3">
-	<div class="carousel slide" id="myCarousel">
-	<ol class ="carousel-indicators">
-	<li data-target = "#my_carousel" data-slide-to = "0" class="active"></li>
-	<li data-target = "#my_carousel" data-slide-to = "1"></li>
-	</ol>
-
-	
-
-	<div class="carousel-inner row0">
-	  
-		<div class="item active">
-		  <div class="col-xs-4"><a href="#"><img src="img/1.jpg"  class="img-responsive"alt="wow comics"></a></div>
-			<div class="col-xs-4"><a href="#"><img src="img/2.jpg"  class="img-responsive"alt="wow comics"></a></div>
-			<div class="col-xs-4"><a href="#"><img src="img/3.jpg"  class="img-responsive"alt="wow comics"></a></div>
-		</div>
-
-		<div class="item">
-			  <div class="col-xs-4"><a href="#"><img src="img/4.jpg"   class="img-responsive"alt="wow comics"></a></div>
-		  <div class="col-xs-4"><a href="#"><img src="img/5.jpg"   class="img-responsive"alt="wow comics"></a></div>
-			<div class="col-xs-4"><a href="#"><img src="img/6.jpg"   class="img-responsive"alt="weird comics"></a></div>
-		</div>
-		
-	</div>
-  <a class="left carousel-control" href="#myCarousel" data-slide="prev"><i class="glyphicon glyphicon-chevron-left"></i></a>
-  <a class="right carousel-control" href="#myCarousel" data-slide="next"><i class="glyphicon glyphicon-chevron-right"></i></a>
-</div>
-</div>
-
-	
-
-	
-
-		
-		
-    <!-- Page Content -->
+   <!-- Page Content -->
     <div class="container">
 
         <div class="row">
             
 			
 			
-			<div class="col-lg-6 col-xs-6">
+			<div class="col-lg-6 col-xs-6 ">
                 <h1>Welcome to Comic Finder</h1>
                
                 
             </div>
-			<div class="col-lg-6 col-xs-6">
-			 <p class="lead">Find a new comic, find out more info about your favorites or discover a new one!</p>
-			</div>
 			
+			</div>
+			<div class="col-lg-6 col-xs-6">
+				<h2>Favorites</h2>
+				<ul>
+				
+				 <?php
+				
+				 
+				/*
+				$sql="select * from login order by lastname";
+				$result = pg_query($query) or die('Query failed: ' . pg_last_error());
+				while($line = pg_fetch_array($result, null, PGSQL_ASSOC)){
+					
+					foreach ($line as $col_value)  {
+						echo "\t\t<td>$col_value</td>\n";
+					}
+				
+				// Free resultset
+				pg_free_result($result);
+
+				// Closing connection
+				pg_close($dbconn);
+				*/
+				?>
+				
+				
+				</ul>
+			
+			</div>
 			
 			<div class="col-lg-12 col-xs-12">
 			<br>
