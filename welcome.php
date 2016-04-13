@@ -33,11 +33,17 @@ require ("classes/config.php");
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-
+	
 </head>
 
 <body>
+<script>
+	var array = ['bop.png','smack.png',"bif.png"];
+	
+	var random = Math.round((Math.random()*images.length))
 
+	$('#background').css({'background-image':images[random]});
+	</script>
     <!-- Navigation -->
     <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
         <div class="container">
@@ -71,6 +77,7 @@ require ("classes/config.php");
 						<?php
 							session_start();
 							$fullname = $_SESSION['name'];
+							$loginid = $_SESSION['loginid'];
 						?>
 						<a href="#">Welcome back <?php echo $fullname; ?></a>
 					</li>
@@ -93,46 +100,112 @@ require ("classes/config.php");
             
 			
 			
-			<div class="col-lg-6 col-xs-6 ">
+			<div class="col-lg-12 col-xs-12 ">
                 <h1>Welcome to Comic Finder</h1>
                
                 
             </div>
 			
-			</div>
-			<div class="col-lg-6 col-xs-6">
-				<h2>Favorites</h2>
-				<ul>
+		</div>
+			
+			
+		<div class="row">	
+			
+			
+			
+			
+			<div class="col-lg-8 col-xs-12">
 				
-				 <?php
-				
-				 
-				/*
-				$sql="select * from login order by lastname";
-				$result = pg_query($query) or die('Query failed: ' . pg_last_error());
-				while($line = pg_fetch_array($result, null, PGSQL_ASSOC)){
+					<h3>Favorites</h3>
+					<br/>
 					
-					foreach ($line as $col_value)  {
-						echo "\t\t<td>$col_value</td>\n";
+					 <?php
+								
+					$heros="";
+					
+					// pull fav charaters
+					$sql="select unnest(charid) from fav where userid =$loginid";
+					$result = pg_query($sql) or die('Query failed: ' . pg_last_error());
+					while($line = pg_fetch_array($result, null, PGSQL_ASSOC)){
+						foreach ($line as $value){$heros =$value.",".$heros;}
+					}		
+									
+					$heros=rtrim($heros, ",") ;
+					
+					?>
+					
+					<ul>
+					<?php
+					if(isset($result)){
+					
+					//pull data about fav characters				
+					$sql1="select * from char where charid in($heros) "; 
+					$result = pg_query($sql1) or die('Query failed: ' . pg_last_error());
+					while ($data= pg_fetch_object($result)){
+					$charname=$data->charname;
+					$charreal=$data->charreal;
+					$pic=$data->picture;
+					echo "
+					<div  class='row' style='border:2px solid black'>
+					 	<div class='col-lg-6 col-xs-12'>
+						<ul style='list-style-type:none'>
+							
+							<img src='img/$pic' alt='$charname' style='height:300px'>
+							<li> Hero's name: '$charname'</li>
+							<br/>
+							<li> Real name: '$charreal'</li>
+							
+						</ul>
+						</div>
+								
+						
+						<div  class='col-lg-6 col-xs-12'>
+						<h3>More info</h3>
+						<p> Soon to be replaced with jsonb data</p>
+						
+						</div>
+							
+					</div>
+					<br/><br/>					
+					";
+					}
+					}
+					else{
+					echo"<div  class='row' style='border:2px solid black'>
+							<div class='col-lg-6 col-xs-12'>
+							<H1> You currently have no favorites</h1>
+						
+							</div>
+						</div>";
 					}
 				
-				// Free resultset
-				pg_free_result($result);
+					// Free resultset
+					pg_free_result($result);
 
-				// Closing connection
-				pg_close($dbconn);
-				*/
-				?>
-				
-				
-				</ul>
+					// Closing connection
+					pg_close($conn);
+					?>
+					
+			</div>
+			<div class="col-lg-4 col-xs-12 btn" >
+			
+			
+			
+			<button class="btn btn-md btn-primary btn-block btn" type="reset" name="random" value="random"> Random</button>
+			<button class="btn btn-md btn-primary btn-block" type="reset" name=
+			"Reset" value="search"> Search</button>
+			<input type="text" name="login" class="form-control" placeholder="search by name" required autofocus>
+			
+			
 			
 			</div>
 			
-			<div class="col-lg-12 col-xs-12">
-			<br>
-			<p class="lead">Try out the API here <a href="">Comic finder</a></p>
-			</div>
+		</div>		
+		
+			<div id="last" class="col-lg-12 col-xs-12 " 
+                <h1>Hello</h1>
+			<div>
+			
 		</div>
         <!-- /.row -->
 

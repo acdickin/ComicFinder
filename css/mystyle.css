@@ -75,3 +75,21 @@ h2{
     display:inline-block;
 }
 
+
+ul{
+	text-align:center;
+	
+	
+}
+ul li{
+	list-style: none;
+    display: inline-block;
+}
+
+.btn{
+	margin-bottom:50px;
+	margin-top:35px;
+	
+}
+
+.bg {background-attachment:fixed; background-repeat: no-repeat; background-position:top right;}

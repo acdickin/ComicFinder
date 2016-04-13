@@ -19,6 +19,16 @@ require ("classes/config.php");
     <!-- Bootstrap core CSS -->
     <link href="css/bootstrap.css" rel="stylesheet">
 
+	
+	<script  type="text/javascript">
+		function changeImg(imgNumber)	{
+			var myImages = ["img/biff.png","img/bop.png","img/smack.png"]; 
+			var imgShown = document.body.stgyle.backgroundImage;
+			var newImgNumber =Math.floor(Math.random()*myImages.length);
+			document.body.style.backgroundImage = 'url('+myImages[newImgNumber]+')';
+		}
+		window.onload=changeImg;
+	</script>
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -27,7 +37,7 @@ require ("classes/config.php");
     <![endif]-->
   </head>
 
-  <body>
+  <body class="bg">
 
     <div class="container">
 
@@ -61,7 +71,7 @@ require ("classes/config.php");
 	$salt="iei0339jfgju3n";
 	$password=sha1($password+$salt);
 	
-	$psql="select firstname, lastname from login where login = '$login' and hashedpassword='$password' ";
+	$psql="select firstname, lastname, loginid from login where login = '$login' and hashedpassword='$password' ";
 	$result=pg_query($psql);
 
 	
@@ -72,9 +82,12 @@ require ("classes/config.php");
 			while ($data= pg_fetch_object($result)){
 				$fname=$data->firstname;
 				$lname=$data->lastname;	
+				$loginid=$data->loginid;
+				
 				$fname =ucfirst($fname);
 				$lname =ucfirst($lname);
 				$_SESSION['name']= $fname." ".$lname; 
+				$_SESSION['loginid']=$loginid;
 			}
 			
 			

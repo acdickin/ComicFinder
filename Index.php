@@ -136,7 +136,14 @@ require ("classes/config.php");
 			</div>
 			
 			
-			
+			<div class="col-lg-12 col-xs-12">
+			<br>
+			<p > Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla euismod metus in est tempus tempor. Duis vulputate, arcu id commodo varius, diam ligula fringilla lacus, tincidunt vulputate diam leo eget lorem. Maecenas scelerisque, enim eu convallis vulputate, neque mauris sagittis enim, eget ultricies arcu nunc ut orci. Maecenas tristique massa et lorem dictum imperdiet. Cras auctor elit quis congue rhoncus. Donec luctus velit nulla, vel feugiat quam condimentum ac. Duis et cursus massa. Nulla molestie dolor enim, id ultrices leo scelerisque at. Donec laoreet et elit eu vestibulum. Nullam viverra vel sapien ac malesuada. Cras eros tellus, consequat sit amet enim vitae, maximus rhoncus purus.</p>
+
+		<p>Donec quis risus id arcu blandit egestas ac eu augue. Cras molestie purus lacus. Suspendisse finibus magna interdum, aliquet neque nec, fermentum erat. Nulla id ligula quis elit lobortis eleifend. Proin viverra a lacus sit amet dignissim. In aliquet, lorem a pretium facilisis, odio turpis rutrum tortor, quis maximus ante mi id mauris. Donec nec tellus hendrerit, malesuada mauris vitae, mattis orci. Morbi quis purus pulvinar massa molestie faucibus mattis ac metus. Sed suscipit sed sapien eu tincidunt. Nullam malesuada, nibh eget fringilla condimentum, dui urna tincidunt ligula, non congue leo lacus sed turpis. Suspendisse sit amet laoreet augue, sit amet ornare nunc. Nulla a porta felis, id consequat dui. Nam non sapien porttitor, facilisis nibh nec, sagittis purus. Cras euismod leo nec pulvinar ornare. Vivamus facilisis volutpat tortor, nec finibus sem efficitur lobortis.</p>
+
+		<p>Ut dictum tellus quis elit vehicula sollicitudin. In a sem libero. Phasellus auctor fringilla justo. In pretium pharetra commodo. Phasellus at imperdiet justo. Ut sed massa tortor. Nullam ex arcu, imperdiet non neque et, feugiat vehicula justo. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+			</div>
 		</div>
         <!-- /.row -->
 
