@@ -1,0 +1,16 @@
+Create of replace function shift_increment()
+RETURNS "trigger" AS
+$BODY$
+    BEGIN
+      id:=nextval('login_loginid_seq');
+      Return NEW;
+    END;
+$BODY$
+
+
+
+Create trigger increment_fix
+after delete
+on login
+
+

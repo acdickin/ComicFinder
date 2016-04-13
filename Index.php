@@ -136,10 +136,7 @@ require ("classes/config.php");
 			</div>
 			
 			
-			<div class="col-lg-12 col-xs-12">
-			<br>
-			<p class="lead">Try out the API here <a href="">Comic finder</a></p>
-			</div>
+			
 		</div>
         <!-- /.row -->
 
