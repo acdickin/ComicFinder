@@ -22,7 +22,8 @@ require ("classes/config.php");
     <!-- Custom CSS -->
     <style type="text/css">
     body {
-		
+		padding-top: 70px;
+
     }
     </style>
 
@@ -104,8 +105,7 @@ require ("classes/config.php");
     <div class="container">
         <div class="row" >
 			<div class="col-lg-12 col-xs-12 ">
-                <br><br>
-				<h1>Welcome to Comic Finder</h1>
+               	<h1>Welcome to Comic Finder</h1>
 			</div>
 			
 		</div>
@@ -163,7 +163,7 @@ require ("classes/config.php");
 										<div class='col-lg-6 col-xs-12'>
 										<ul style='list-style-type:none'>
 											
-											<img src='img/$pic' alt='$charname' style='height:300px'>
+											<li><img src='img/$pic' alt='$charname' style='height:300px'></li>
 											<li> Hero's name: '$charname'</li>
 											<br/>
 											<li> Real name: '$charreal'</li>
@@ -231,7 +231,7 @@ require ("classes/config.php");
 									</div>
 									<div class='col-lg-6 col-xs-12'>
 										<ul style='list-style-type:none'>
-											<img src='img/$pic' alt='$charname' style='height:300px'>
+											<li><img src='img/$pic' alt='$charname' style='height:300px'></li>
 											<li> Hero's name: '$charname'</li>
 											<br/>
 											<li> Real name: '$charreal'</li>
@@ -250,25 +250,35 @@ require ("classes/config.php");
 					}
 					
 					
-					// Free resultset
-					pg_free_result($result);
-
-					// Closing connection
-					pg_close($conn);
+					
 					?>
 					
 			</div>
 			<div class="col-lg-4 col-xs-12 btn" >
+				
+			<form class="form-signin" method="POST">
+				<button class="btn btn-md btn-primary btn-block btn" type="reset" name="random" value="random" onclick="randomHero(); location.href = 'heros.php'"> Random</button>
+				
+				
+				<button class="btn btn-lg btn-primary btn-block" type="submit" name="submit" value="Submit">Submit</button>
+				
+				<input type="text" name="find" class="form-control"  placeholder="search by name" required >
+			</form>
+			<?php
+if(isset($_POST['submit'])){
+			$find=$_POST['find'];
+			$sql1="select * from char where charname like '$find'";
+			$result = pg_query($sql1) or die('Query failed: ' . pg_last_error());
 			
 			
+		}
 			
-			<button class="btn btn-md btn-primary btn-block btn" type="reset" name="random" value="random" onclick="location.href = 'heros.php'"> Random</button>
-			<button class="btn btn-md btn-primary btn-block" type="reset" name=
-			"Reset" value="search"> Search</button>
-			<input type="text" name="login" class="form-control" placeholder="search by name" required autofocus>
-			
-			
-			
+			// Free resultset
+					pg_free_result($result);
+
+					// Closing connection
+					pg_close($conn);
+			?>
 			</div>
 			
 		</div>		

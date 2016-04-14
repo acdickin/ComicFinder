@@ -21,10 +21,13 @@ require ("classes/config.php");
 
     <!-- Custom CSS -->
     <style type="text/css">
+    <script src="classes/randomHero.js"></script>
     body {
-		
+        padding-top: 70px;
+        /* Required padding for .navbar-fixed-top. Remove if using .navbar-static-top. Change if height of navigation changes. */
     }
-    </style>
+	
+	</style>
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -36,7 +39,7 @@ require ("classes/config.php");
 </head>
 
 <body>
-<
+
     <!-- Navigation -->
     <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
         <div class="container">
@@ -89,41 +92,102 @@ require ("classes/config.php");
 						}
 					?>						
 				</ul>
-                
-				
             </div>
             <!-- /.navbar-collapse -->
         </div>
         <!-- /.container -->
     </nav>
-		<div class="row">	
-			 <div class="col-lg-1 col-xs-1">
-		   </div>
-			<div class="col-lg-10 col-xs-12 " '>
+	
+	<div class="row">	
+		<div class="col-lg-1 col-xs-1">
+		</div>
+		<div class="col-lg-10 col-xs-12 ">
 				
 				<br/> <br/>
-				<h3>Hero's page</h3>
-					<div  class='col-lg-4 col-xs-11'  >
-						<h3>Hero </h3>
-							
-						</div>
+				<h3>Hero page</h3>
+					<?php
 					
-					<div  class='col-lg-4 col-xs-11' >
+					$rand=$_SESSION['rand'];
+					
+					$psql="Select * from char where charid=$rand";
+					$result = pg_query($psql) or die('Query failed: ' . pg_last_error());
+					while ($data= pg_fetch_object($result)){
+							$charname=$data->charname;
+							$charreal=$data->charreal;
+							$pic=$data->picture;
+							$extra=$data->extra;
+							$json=json_decode($extra, true);
+							
+					?>
+					
+					
+					
+					
+					
+					<div  class='col-lg-4 col-xs-12'  >
+						<h3>Hero </h3>
+							<?php
+							echo"
+							<img src='img/$pic' alt='$charname' style='height:300px'>
+							<li> Hero's name: '$charname'</li>
+							<br/>
+							<li> Real name: '$charreal'</li>
+							";
+							?>
+					</div>
+					
+					<div  class='col-lg-4 col-xs-12' >
 						
 						<h3>Info </h3>
-							
-						</div>
+							<?php
+							foreach($json as $key => $value) {
+								$key=ucfirst($key);
+								if (gettype($value)=="array")
+									{
+										$value=implode(",",$value);
+										$value=ucfirst($value);
+									}			
+								$value=ucfirst($value);											
+											
+								Echo"<h4>$key :</h4>
+								<p > $value </p>";								
+							}
+					}
+							?>
+					</div>
 					
-					<div  class='col-lg-4 col-xs-11' >
+					<div  class='col-lg-4 col-xs-12' >
 						
 						<h3>Best Comics </h3>
 							
-						</div>
+					</div>
 					
-			</div>
-		</div>	
+		</div>
+			<?php 
+				pg_free_result($result);
+
+				// Closing connection
+				pg_close($conn);
+			?>		
+	</div>	
+
+
 	
-				
-				
+    <!-- /.container -->
+	<div  id= "bottom" class="navbar navbar-fixed-bottom text-center" >
+		<p > <!--class-= "text-muted"--> Designed with you in mind</p>
+	</div>
+    <!-- jQuery Version 1.11.1 -->
+    <script src="js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+	
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+
+</body>
+
+</html>
+		
 				
 				
