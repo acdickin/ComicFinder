@@ -20,15 +20,7 @@ require ("classes/config.php");
     <link href="css/bootstrap.css" rel="stylesheet">
 
 	
-	<script  type="text/javascript">
-		function changeImg(imgNumber)	{
-			var myImages = ["img/biff.png","img/bop.png","img/smack.png"]; 
-			var imgShown = document.body.stgyle.backgroundImage;
-			var newImgNumber =Math.floor(Math.random()*myImages.length);
-			document.body.style.backgroundImage = 'url('+myImages[newImgNumber]+')';
-		}
-		window.onload=changeImg;
-	</script>
+	
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -37,31 +29,34 @@ require ("classes/config.php");
     <![endif]-->
   </head>
 
-  <body class="bg">
+  <body>
 
     <div class="container">
-
-      <form class="form-signin" method="POST" autocomplete="off">
-        <h2 class="form-signin-heading">Please sign in</h2>
-        <label for="inputLogin" class="sr-only">Login</label>
-        <input type="text" name="login" class="form-control" placeholder="Login" required autofocus>
-		<br/>
-        <label for="inputPassword" class="sr-only">Password</label>
-        <input type="password" name="password" class="form-control" placeholder="Password" required>
-        <div class="checkbox">
-          <label>
-            <input type="checkbox" value="remember-me"> Remember me
-          </label>
-        </div>
-        <button class="btn btn-lg btn-primary btn-block" type="submit" name="submit" value="Submit">Sign in</button>
+			<div class="col-lg-3 col-xs-1">
+		   </div>
+		<div class="col-xs-10 col-lg-6 fun2 center" >
+		  <form class="form-signin" method="POST" autocomplete="off">
+			<h2 class="form-signin-heading">Please sign in</h2>
+			<label for="inputLogin" class="sr-only">Login</label>
+			<input type="text" name="login" class="form-control" placeholder="Login" required autofocus>
+			<br/>
+			<label for="inputPassword" class="sr-only">Password</label>
+			<input type="password" name="password" class="form-control" placeholder="Password" required>
+			<div class="checkbox">
+			  <label>
+				<input type="checkbox" value="remember-me"> Remember me
+			  </label>
+			</div>
+			<button class="btn btn-lg btn-primary btn-block" type="submit" name="submit" value="Submit">Sign in</button>
+			
+			
 		
-		
-	
-      </form>
-	  <br/>
-		<button class="btn btn-lg btn-primary btn-block" onclick=" location.href='CreateLogin.php'"> Create New User</button>
-    </div> <!-- /container -->
-	<?php
+		  </form>
+		  <br/>
+			<button class="btn btn-lg btn-primary btn-block" onclick=" location.href='CreateLogin.php'"> Create New User</button>
+		</div> <!-- /container -->
+	</div>
+		<?php
     
 	if(isset($_POST['submit'])){	
 	
@@ -69,14 +64,14 @@ require ("classes/config.php");
 	$login=$_POST['login'];
 	$password=$_POST['password'];
 	$salt="iei0339jfgju3n";
-	$password=sha1($password+$salt);
+	$password=sha1($password.$salt);
 	
 	$psql="select firstname, lastname, loginid from login where login = '$login' and hashedpassword='$password' ";
 	$result=pg_query($psql);
 
 	
 		if(pg_num_rows(($result))>0){
-			echo" you are now logged in";
+			
 			
 			session_start();
 			while ($data= pg_fetch_object($result)){
@@ -102,7 +97,7 @@ require ("classes/config.php");
 	}
 	else{
 	/*Nothing submitted yet*/
-	Echo "not submited";
+	
 	}
 	?>
 

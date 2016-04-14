@@ -68,9 +68,10 @@ require ("classes/config.php");
                     </li>
 				</ul>	
 				<ul class="nav navbar-nav navbar-right">
-					<li>
-						<a href="login.php">Sign in</a>
-					</li>
+				
+								<li>
+									<a href='login.php'> Login</a>
+								</li>
 				</ul>
                 
 				

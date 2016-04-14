@@ -50,7 +50,7 @@ require ("classes/config.php");
 					
                 </button>
 				
-                <a class="navbar-brand" href="#"> COMIC FINDER</a>
+                <a class="navbar-brand" href="index.php"> COMIC FINDER</a>
             </div>
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -66,14 +66,28 @@ require ("classes/config.php");
                     </li>
 				</ul>	
 				<ul class="nav navbar-nav navbar-right">
-					<li>
+					
 						<?php
-							session_start();
-							$fullname = $_SESSION['name'];
-							$loginid = $_SESSION['loginid'];
-						?>
-						<a href="#">Welcome back <?php echo $fullname; ?></a>
-					</li>
+						session_start();
+						$fullname = $_SESSION['name'];
+						$loginid = $_SESSION['loginid'];		
+						if(isset($_SESSION['name']) && !empty($_SESSION['name'])) {
+							echo"<li>
+									<a href='#'>Welcome  $fullname</a>
+								</li>
+								<li>
+									<a href='index.php' onclick='session_unset();session_destroy();'> log out</a>
+										
+								<li>";		
+							}
+							else{
+							echo"
+								<li>
+									<a href='login.php'></a>
+								</li>";
+									
+						}
+					?>						
 				</ul>
                 
 				
@@ -88,9 +102,10 @@ require ("classes/config.php");
 	
    <!-- Page Content -->
     <div class="container">
-        <div class="row">
+        <div class="row" >
 			<div class="col-lg-12 col-xs-12 ">
-                <h1>Welcome to Comic Finder</h1>
+                <br><br>
+				<h1>Welcome to Comic Finder</h1>
 			</div>
 			
 		</div>
@@ -101,12 +116,13 @@ require ("classes/config.php");
 				<h3>Favorites</h3>
 				<br/>
 				<?php
-								
+							
 				$heros="";
 					
 				// pull fav charaters
 				$sql="select unnest(charid) from fav where userid =$loginid";
 				$result = pg_query($sql) or die('Query failed: ' . pg_last_error());
+				
 				$counter=0;
 				while($line = pg_fetch_array($result, null, PGSQL_ASSOC)){
 					foreach ($line as $value){$heros =$value.",".$heros;}
@@ -115,7 +131,19 @@ require ("classes/config.php");
 					?>
 					<ul>
 					<?php
-					if(isset($result)){
+										
+					if( (pg_num_rows($result))==0 ){
+							
+							echo"<div  class='row' style='border:2px solid black'>
+									<div class='col-lg-6 col-xs-12'>
+										<H1> You currently have no favorites</h1>
+							
+									</div>
+							</div>";
+					}
+					
+					
+					elseif(isset($result)){
 						//pull data about fav characters				
 						$sql1="select * from char where charid in($heros) "; 
 						$result = pg_query($sql1) or die('Query failed: ' . pg_last_error());
@@ -172,7 +200,7 @@ require ("classes/config.php");
 								";
 								
 							}	
-						
+														
 							else{
 								echo"	<div  class='row' style='border:2px solid black'>
 									
@@ -218,12 +246,7 @@ require ("classes/config.php");
 						}
 					}
 					else{
-					echo"<div  class='row' style='border:2px solid black'>
-							<div class='col-lg-6 col-xs-12'>
-							<H1> You currently have no favorites</h1>
-						
-							</div>
-						</div>";
+					
 					}
 					
 					
@@ -239,7 +262,7 @@ require ("classes/config.php");
 			
 			
 			
-			<button class="btn btn-md btn-primary btn-block btn" type="reset" name="random" value="random"> Random</button>
+			<button class="btn btn-md btn-primary btn-block btn" type="reset" name="random" value="random" onclick="location.href = 'heros.php'"> Random</button>
 			<button class="btn btn-md btn-primary btn-block" type="reset" name=
 			"Reset" value="search"> Search</button>
 			<input type="text" name="login" class="form-control" placeholder="search by name" required autofocus>

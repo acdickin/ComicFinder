@@ -73,6 +73,15 @@ h2{
 	
 	
 }
+.fun2{
+	margin-top:40px;
+	border: none;
+    border: 5px solid rgba(0,0,0,0.75);
+    border-radius: 5px;
+    box-shadow: inset 5px 5px 5px #CCC;
+	
+	
+}
 .center {
     text-align:center;
 }

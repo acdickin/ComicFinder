@@ -31,7 +31,7 @@
 			$email= pg_escape_string($email);
 			
 			$salt="iei0339jfgju3n";
-			$password=pg_escape_string(sha1($password +$salt));
+			$password=pg_escape_string(sha1($password .$salt));
 			
 			$psql=pg_query($conn, "select * from login where email='$email'");
 			$psql2=pg_query($conn, "select * from login where login='$login'");
@@ -50,11 +50,11 @@
 						exit(); 
 						}	 
 						
-					var_dump($query);
+					
 					pg_close($conn);
 					?>
 					<script> 
-					alert ("Creation of user '$login' was successful");
+					alert ("Creation of user was successful");
 					location.href='login.php';
 					</script>
 				<?php
@@ -86,43 +86,30 @@
 		   </div>
 			<div class="col-xs-10 col-lg-6 fun center" >
 				<h1> Create New User</h1>
-				<BR><BR>
-				First Name :
-				<BR> 
-				<div class="col-sm-offset-1 col-sm-10 "> 
-				<input type="text" name="firstname" size="40" required ><BR> 
-				</div>
-				<BR> <BR> 
-				Last Name : 
-				<BR> 
-				<div class="col-sm-offset-1 col-sm-10 "> 
-				<input type="text" name="lastname" size="40" required ><BR> 
-				</div>
-				<BR> <BR>
-				User Name: 
-				<BR>
-				<div class="col-sm-offset-1 col-sm-10" > 
-				<input type="text" name="login" size="40"  required><BR> 
-				</div>
-				<BR> <BR> 				
-				Email Address : 
-				<BR>
-				<div class="col-sm-offset-1 col-sm-10" > 
-				<input type="email" name="email" size="40" required ><BR> 
-				</div>
-				<BR> <BR> 
-				Password :
-				<BR> 
-				<div class="col-sm-offset-1 col-sm-10"> 
-				<input type="password" name="password" size="40"required><BR> 
-				</div>
-				<BR> <BR> 
-				Password Verify :
-				<BR> 
-				<div class="col-sm-offset-1 col-sm-10"> 
-				<input type="password" name="passwordv" size="40" ><BR> 
-				</div>
-				<BR> <BR> 
+				
+				<label for="inputLogin" class="sr-only">Firstname</label>
+				<input type="text" name="firstname" class="form-control" placeholder="First Name" required autofocus>
+				<br/>
+				
+				<label for="inputLogin" class="sr-only">Lastname</label>
+				<input type="text" name="lastname" class="form-control" placeholder="Last Name" required >
+				<br/>
+				
+				<label for="inputLogin" class="sr-only">User Name</label>
+				<input type="text" name="login" class="form-control" placeholder="User Name" required >
+				<br/>
+				
+				<label for="inputLogin" class="sr-only">Email </label>
+				<input type="email" name="email" class="form-control" placeholder="Email" required >
+				<br/>
+				
+				<label for="Password" class="sr-only">Password </label>
+				<input type="password" name="password" class="form-control" placeholder="Password" required >
+				<br/>
+				
+				<label for="Password" class="sr-only">Verify Password </label>
+				<input type="password" name="passwordv" class="form-control" placeholder="Password Verify" required >
+				<br/>
 				
 				
 				<button class="btn btn-md btn-primary btn-block" type="submit" name="submit" value="Submit">Create User</button>
