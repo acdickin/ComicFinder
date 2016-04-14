@@ -20,10 +20,9 @@ require ("classes/config.php");
 	 <link href="css/mystyle.css" rel="stylesheet">
 
     <!-- Custom CSS -->
-    <style>
+    <style type="text/css">
     body {
-        padding-top: 70px;
-        /* Required padding for .navbar-fixed-top. Remove if using .navbar-static-top. Change if height of navigation changes. */
+		
     }
     </style>
 
@@ -37,13 +36,7 @@ require ("classes/config.php");
 </head>
 
 <body>
-<script>
-	var array = ['bop.png','smack.png',"bif.png"];
-	
-	var random = Math.round((Math.random()*images.length))
-
-	$('#background').css({'background-image':images[random]});
-	</script>
+<
     <!-- Navigation -->
     <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
         <div class="container">
@@ -95,80 +88,134 @@ require ("classes/config.php");
 	
    <!-- Page Content -->
     <div class="container">
-
         <div class="row">
-            
-			
-			
 			<div class="col-lg-12 col-xs-12 ">
                 <h1>Welcome to Comic Finder</h1>
-               
-                
-            </div>
+			</div>
 			
 		</div>
 			
 			
 		<div class="row">	
-			
-			
-			
-			
 			<div class="col-lg-8 col-xs-12">
-				
-					<h3>Favorites</h3>
-					<br/>
-					
-					 <?php
+				<h3>Favorites</h3>
+				<br/>
+				<?php
 								
-					$heros="";
+				$heros="";
 					
-					// pull fav charaters
-					$sql="select unnest(charid) from fav where userid =$loginid";
-					$result = pg_query($sql) or die('Query failed: ' . pg_last_error());
-					while($line = pg_fetch_array($result, null, PGSQL_ASSOC)){
-						foreach ($line as $value){$heros =$value.",".$heros;}
+				// pull fav charaters
+				$sql="select unnest(charid) from fav where userid =$loginid";
+				$result = pg_query($sql) or die('Query failed: ' . pg_last_error());
+				$counter=0;
+				while($line = pg_fetch_array($result, null, PGSQL_ASSOC)){
+					foreach ($line as $value){$heros =$value.",".$heros;}
 					}		
-									
 					$heros=rtrim($heros, ",") ;
-					
 					?>
-					
 					<ul>
 					<?php
 					if(isset($result)){
-					
-					//pull data about fav characters				
-					$sql1="select * from char where charid in($heros) "; 
-					$result = pg_query($sql1) or die('Query failed: ' . pg_last_error());
-					while ($data= pg_fetch_object($result)){
-					$charname=$data->charname;
-					$charreal=$data->charreal;
-					$pic=$data->picture;
-					echo "
-					<div  class='row' style='border:2px solid black'>
-					 	<div class='col-lg-6 col-xs-12'>
-						<ul style='list-style-type:none'>
+						//pull data about fav characters				
+						$sql1="select * from char where charid in($heros) "; 
+						$result = pg_query($sql1) or die('Query failed: ' . pg_last_error());
+						while ($data= pg_fetch_object($result)){
+							$charname=$data->charname;
+							$charreal=$data->charreal;
+							$pic=$data->picture;
+							$counter++;
+							$extra=$data->extra;
+							$json=json_decode($extra, true);
 							
-							<img src='img/$pic' alt='$charname' style='height:300px'>
-							<li> Hero's name: '$charname'</li>
-							<br/>
-							<li> Real name: '$charreal'</li>
 							
-						</ul>
-						</div>
+							
+							if($counter % 2 != 0){	
+								echo "
+									<div  class='row' style='border:2px solid black'>
+										<div class='col-lg-6 col-xs-12'>
+										<ul style='list-style-type:none'>
+											
+											<img src='img/$pic' alt='$charname' style='height:300px'>
+											<li> Hero's name: '$charname'</li>
+											<br/>
+											<li> Real name: '$charreal'</li>
+											
+										</ul>
+										</div>
+												
+										
+										<div  class='col-lg-6 col-xs-12'>
+										<h3>More info</h3>
+										<p>
+										";
+										foreach($json as $key => $value) {
+											$key=ucfirst($key);
+											
+											
+											if (gettype($value)=="array")
+											{
+												$value=implode(",",$value);
+												$value=ucfirst($value);
+											}			
+											$value=ucfirst($value);											
+											Echo"	<h4>$key :</h4>
+											<p > $value </p>";											
+										}
+										
+										Echo"
+										</p>
+										
+										</div>
+											
+									</div>
+									<br/><br/>					
+								";
 								
+							}	
 						
-						<div  class='col-lg-6 col-xs-12'>
-						<h3>More info</h3>
-						<p> Soon to be replaced with jsonb data</p>
+							else{
+								echo"	<div  class='row' style='border:2px solid black'>
+									
+											
+									
+									<div  class='col-lg-6 col-xs-12'>
+										<h3>More info</h3>
+										
+										";
+										foreach($json as $key => $value) {
+											$key=ucfirst($key);
+											
+											
+											if (gettype($value)=="array")
+											{
+												$value=implode(",",$value);
+												$value=ucfirst($value);
+											}			
+											$value=ucfirst($value);											
+											
+											Echo" 
+												<h4>$key :</h4>
+											<p > $value </p>";										
+										}
+										
+										Echo"
+										
+									</div>
+									<div class='col-lg-6 col-xs-12'>
+										<ul style='list-style-type:none'>
+											<img src='img/$pic' alt='$charname' style='height:300px'>
+											<li> Hero's name: '$charname'</li>
+											<br/>
+											<li> Real name: '$charreal'</li>
+										</ul>
+									</div>	
+								</div>
+								<br/><br/>					
+							";
+								
+							}
 						
-						</div>
-							
-					</div>
-					<br/><br/>					
-					";
-					}
+						}
 					}
 					else{
 					echo"<div  class='row' style='border:2px solid black'>
@@ -178,7 +225,8 @@ require ("classes/config.php");
 							</div>
 						</div>";
 					}
-				
+					
+					
 					// Free resultset
 					pg_free_result($result);
 
@@ -202,8 +250,8 @@ require ("classes/config.php");
 			
 		</div>		
 		
-			<div id="last" class="col-lg-12 col-xs-12 " 
-                <h1>Hello</h1>
+			<div id="last" class="col-lg-12 col-xs-12 " >
+                <h1></h1>
 			<div>
 			
 		</div>

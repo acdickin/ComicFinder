@@ -55,7 +55,13 @@ h2{
 		length:30;
 		
 	}
-	
+	ul{
+	text-align:left;
+	}
+	ul li{
+	list-style: none;
+    display: inline-block;
+	}
 }
 
 .fun{

@@ -1,4 +1,4 @@
-Create of replace function shift_increment()
+ Create of replace function shift_increment()
 RETURNS "trigger" AS
 $BODY$
     BEGIN
