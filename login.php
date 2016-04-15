@@ -4,6 +4,7 @@
 
 <head>
 <?php
+
 require ("classes/config.php");
 ?>
     <meta charset="utf-8">
@@ -18,10 +19,6 @@ require ("classes/config.php");
 
     <!-- Bootstrap core CSS -->
     <link href="css/bootstrap.css" rel="stylesheet">
-
-	
-	
-
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
@@ -48,9 +45,6 @@ require ("classes/config.php");
 			  </label>
 			</div>
 			<button class="btn btn-lg btn-primary btn-block" type="submit" name="submit" value="Submit">Sign in</button>
-			
-			
-		
 		  </form>
 		  <br/>
 			<button class="btn btn-lg btn-primary btn-block" onclick=" location.href='CreateLogin.php'"> Create New User</button>
@@ -69,23 +63,18 @@ require ("classes/config.php");
 	$psql="select firstname, lastname, loginid from login where login = '$login' and hashedpassword='$password' ";
 	$result=pg_query($psql);
 
-	
 		if(pg_num_rows(($result))>0){
-			
-			
+	
 			session_start();
 			while ($data= pg_fetch_object($result)){
 				$fname=$data->firstname;
 				$lname=$data->lastname;	
 				$loginid=$data->loginid;
-				
 				$fname =ucfirst($fname);
 				$lname =ucfirst($lname);
 				$_SESSION['name']= $fname." ".$lname; 
 				$_SESSION['loginid']=$loginid;
 			}
-			
-			
 			?>
 			<script>location.href=('welcome.php')</script>
 			<?php
@@ -97,7 +86,6 @@ require ("classes/config.php");
 	}
 	else{
 	/*Nothing submitted yet*/
-	
 	}
 	?>
 

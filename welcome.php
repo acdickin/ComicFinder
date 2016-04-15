@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <?php
-
+error_reporting(0);
 require ("classes/config.php");
 ?>
 <html lang="en">
@@ -17,13 +17,12 @@ require ("classes/config.php");
 
     <!-- Bootstrap Core CSS -->
     <link href="css/bootstrap.css" rel="stylesheet">
-	 <link href="css/mystyle.css" rel="stylesheet">
+	<link href="css/mystyle.css" rel="stylesheet">
 
     <!-- Custom CSS -->
     <style type="text/css">
     body {
 		padding-top: 70px;
-
     }
     </style>
 
@@ -37,7 +36,7 @@ require ("classes/config.php");
 </head>
 
 <body>
-<
+
     <!-- Navigation -->
     <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
         <div class="container">
@@ -57,10 +56,10 @@ require ("classes/config.php");
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-left">
                     <li>
-                        <a href="#">About</a>
+                        <a href="welcome.php">Favorites</a>
                     </li>
                     <li>
-                        <a href="#">Services</a>
+                        <a href="heros.php">Heros</a>
                     </li>
                     <li>
                         <a href="#">Contact</a>
@@ -68,30 +67,45 @@ require ("classes/config.php");
 				</ul>	
 				<ul class="nav navbar-nav navbar-right">
 					
-						<?php
-						session_start();
-						$fullname = $_SESSION['name'];
-						$loginid = $_SESSION['loginid'];		
-						if(isset($_SESSION['name']) && !empty($_SESSION['name'])) {
-							echo"<li>
-									<a href='#'>Welcome  $fullname</a>
-								</li>
-								<li>
-									<a href='index.php' onclick='session_unset();session_destroy();'> log out</a>
-										
-								<li>";		
-							}
-							else{
-							echo"
-								<li>
-									<a href='login.php'></a>
-								</li>";
-									
+				<?php
+				session_start();
+				$fullname = $_SESSION['name'];
+				$loginid = $_SESSION['loginid'];		
+				if(isset($_SESSION['name']) && !empty($_SESSION['name'])) {
+					echo"<li>
+							<a href='#'>Welcome  $fullname</a>
+						</li>
+						<li>
+							<a href='index.php' onclick='session_unset();session_destroy();'> log out</a>
+						<li>";		
+					}
+				else{
+					Header('Location: index.php');	
+				}
+				#FOR NAV OF SEARCH AND RANDOM			
+					if(isset($_POST['submit']) && (($_POST['find'])!=""))  {
+					
+					$find=$_POST['find'];
+					$sql1="select charid from char where charname like '%$find%'";
+					$result = pg_query($sql1) or die("No Results were found for $find");
+			
+						while ($data = pg_fetch_object($result)) {	
+							$row=$data->charid;
+							$search=$search.",".$row;
+							
 						}
-					?>						
+						$search=ltrim($search, ',');
+						$loc="heros.php?rand=$search";
+						
+						Header("Location:$loc");
+					}
+					elseif (isset($_POST['find'])){
+						$rand= rand( 1 , 5 );
+						$loc="heros.php?rand=$rand";
+						Header("Location:$loc");
+					}	
+				?>						
 				</ul>
-                
-				
             </div>
             <!-- /.navbar-collapse -->
         </div>
@@ -107,10 +121,8 @@ require ("classes/config.php");
 			<div class="col-lg-12 col-xs-12 ">
                	<h1>Welcome to Comic Finder</h1>
 			</div>
-			
 		</div>
-			
-			
+
 		<div class="row">	
 			<div class="col-lg-8 col-xs-12">
 				<h3>Favorites</h3>
@@ -127,27 +139,24 @@ require ("classes/config.php");
 				while($line = pg_fetch_array($result, null, PGSQL_ASSOC)){
 					foreach ($line as $value){$heros =$value.",".$heros;}
 					}		
-					$heros=rtrim($heros, ",") ;
-					?>
-					<ul>
-					<?php
-										
+				$heros=rtrim($heros, ",") ;
+				?>
+				<ul>
+					<?php				
 					if( (pg_num_rows($result))==0 ){
-							
 							echo"<div  class='row' style='border:2px solid black'>
 									<div class='col-lg-6 col-xs-12'>
 										<H1> You currently have no favorites</h1>
-							
 									</div>
 							</div>";
 					}
-					
-					
+
 					elseif(isset($result)){
 						//pull data about fav characters				
 						$sql1="select * from char where charid in($heros) "; 
 						$result = pg_query($sql1) or die('Query failed: ' . pg_last_error());
 						while ($data= pg_fetch_object($result)){
+							$charid=$data->charid;
 							$charname=$data->charname;
 							$charreal=$data->charreal;
 							$pic=$data->picture;
@@ -159,119 +168,97 @@ require ("classes/config.php");
 							
 							if($counter % 2 != 0){	
 								echo "
-									<div  class='row' style='border:2px solid black'>
-										<div class='col-lg-6 col-xs-12'>
+								<div  class='row' style='border:2px solid black'>
+									<div class='col-lg-6 col-xs-12'>
 										<ul style='list-style-type:none'>
 											
-											<li><img src='img/$pic' alt='$charname' style='height:300px'></li>
+											<li>  <a href='heros.php?rand=$charid'> <img src='img/$pic' alt='$charname' style='height:300px'></a></li>
 											<li> Hero's name: '$charname'</li>
 											<br/>
 											<li> Real name: '$charreal'</li>
 											
 										</ul>
-										</div>
-												
-										
-										<div  class='col-lg-6 col-xs-12'>
-										<h3>More info</h3>
-										<p>
-										";
-										foreach($json as $key => $value) {
-											$key=ucfirst($key);
-											
-											
-											if (gettype($value)=="array")
-											{
-												$value=implode(",",$value);
-												$value=ucfirst($value);
-											}			
-											$value=ucfirst($value);											
-											Echo"	<h4>$key :</h4>
-											<p > $value </p>";											
-										}
-										
-										Echo"
-										</p>
-										
-										</div>
-											
 									</div>
+											
+									
+									<div  class='col-lg-6 col-xs-12'>
+										<h3>More info</h3>
+									<p>
+									";
+									foreach($json as $key => $value) {
+										$key=ucfirst($key);
+
+										if (gettype($value)=="array")
+										{
+											$value=implode(",",$value);
+											$value=ucfirst($value);
+										}			
+										$value=ucfirst($value);											
+										Echo"	<h4>$key :</h4>
+										<p > $value </p>";											
+									}
+											
+									Echo"
+									</p>
+										
+									</div>
+											
+								</div>
 									<br/><br/>					
 								";
 								
 							}	
 														
 							else{
-								echo"	<div  class='row' style='border:2px solid black'>
+					echo"   <div  class='row' style='border:2px solid black'>
+								<div  class='col-lg-6 col-xs-12'>
+									<h3>More info</h3>
+									";
+									foreach($json as $key => $value) {
+										$key=ucfirst($key);
+
+										if (gettype($value)=="array")
+										{
+											$value=implode(",",$value);
+											$value=ucfirst($value);
+										}			
+										$value=ucfirst($value);						
+										Echo" 
+											<h4>$key :</h4>
+										<p > $value </p>";							
+									}
+									Echo"
 									
-											
-									
-									<div  class='col-lg-6 col-xs-12'>
-										<h3>More info</h3>
-										
-										";
-										foreach($json as $key => $value) {
-											$key=ucfirst($key);
-											
-											
-											if (gettype($value)=="array")
-											{
-												$value=implode(",",$value);
-												$value=ucfirst($value);
-											}			
-											$value=ucfirst($value);											
-											
-											Echo" 
-												<h4>$key :</h4>
-											<p > $value </p>";										
-										}
-										
-										Echo"
-										
-									</div>
-									<div class='col-lg-6 col-xs-12'>
-										<ul style='list-style-type:none'>
-											<li><img src='img/$pic' alt='$charname' style='height:300px'></li>
-											<li> Hero's name: '$charname'</li>
-											<br/>
-											<li> Real name: '$charreal'</li>
-										</ul>
-									</div>	
 								</div>
-								<br/><br/>					
+								<div class='col-lg-6 col-xs-12'>
+									<ul style='list-style-type:none'>
+										<li><a href='heros.php?rand=$charid'> <img src='img/$pic' alt='$charname' style='height:300px'></li>
+										<li> Hero's name: '$charname'</li>
+										<br/>
+										<li> Real name: '$charreal'</li>
+									</ul>
+								</div>	
+							</div>
+							<br/><br/>					
 							";
 								
 							}
-						
 						}
 					}
 					else{
 					
 					}
-					
-					
-					
 					?>
-					
 			</div>
 			<div class="col-lg-4 col-xs-12 btn" >
 				
 			<form class="form-signin" method="POST">
-				<button class="btn btn-md btn-primary btn-block btn" type="reset" name="random" value="random" onclick="randomHero(); location.href = 'heros.php'"> Random</button>
-				
-				
+				<button class="btn btn-lg btn-primary btn-block btn" type="submit" name="random" value="random" > Random</button>
 				<button class="btn btn-lg btn-primary btn-block" type="submit" name="submit" value="Submit">Submit</button>
-				
-				<input type="text" name="find" class="form-control"  placeholder="search by name" required >
+				<input class="btn btn-lg btn-primary btn-block btn" type="text" name="find"  placeholder="search by name" >
 			</form>
 			<?php
-if(isset($_POST['submit'])){
-			$find=$_POST['find'];
-			$sql1="select * from char where charname like '$find'";
-			$result = pg_query($sql1) or die('Query failed: ' . pg_last_error());
-			
-			
-		}
+		
 			
 			// Free resultset
 					pg_free_result($result);
@@ -283,9 +270,9 @@ if(isset($_POST['submit'])){
 			
 		</div>		
 		
-			<div id="last" class="col-lg-12 col-xs-12 " >
-                <h1></h1>
-			<div>
+		<div id="last" class="col-lg-12 col-xs-12 " >
+			<h1></h1>
+		<div>
 			
 		</div>
         <!-- /.row -->

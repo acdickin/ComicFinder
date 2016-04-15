@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <?php
-
+error_reporting(0);
 require ("classes/config.php");
 ?>
 <html lang="en">
@@ -21,13 +21,14 @@ require ("classes/config.php");
 
     <!-- Custom CSS -->
     <style type="text/css">
-    <script src="classes/randomHero.js"></script>
-    body {
+	 body {
         padding-top: 70px;
         /* Required padding for .navbar-fixed-top. Remove if using .navbar-static-top. Change if height of navigation changes. */
     }
 	
 	</style>
+    <script src="classes/randomHero.js"></script>
+   
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -50,19 +51,17 @@ require ("classes/config.php");
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
-					
-                </button>
-				
+				</button>
                 <a class="navbar-brand" href="index.php"> COMIC FINDER</a>
             </div>
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-left">
                     <li>
-                        <a href="#">About</a>
+                        <a href="welcome.php">Favorites</a>
                     </li>
                     <li>
-                        <a href="#">Services</a>
+                        <a href="heros.php">Heros</a>
                     </li>
                     <li>
                         <a href="#">Contact</a>
@@ -71,107 +70,153 @@ require ("classes/config.php");
 				<ul class="nav navbar-nav navbar-right">
 					
 						<?php
-						session_start();
-						$fullname = $_SESSION['name'];
-						$loginid = $_SESSION['loginid'];		
-						if(isset($_SESSION['name']) && !empty($_SESSION['name'])) {
-							echo"<li>
-									<a href='Welcome.php'>Welcome  $fullname</a>
-								</li>
-								<li>
-									<a href='index.php' onclick='session_unset();session_destroy();'> log out</a>
-										
-								<li>";		
-							}
-							else{
-							echo"
-								<li>
-									<a href='login.php'></a>
-								</li>";
-									
+				session_start();
+				$fullname = $_SESSION['name'];
+				$loginid = $_SESSION['loginid'];		
+				if(isset($_SESSION['name']) && !empty($_SESSION['name'])) {
+					echo"<li>
+							<a href='#'>Welcome  $fullname</a>
+						</li>
+						<li>
+							<a href='index.php' onclick='session_unset();session_destroy();'> log out</a>
+						<li>";		
+					}
+				else{
+					Header('Location: index.php');	
+				}
+				#FOR NAV OF SEARCH AND RANDOM			
+					if(isset($_POST['submit']) && (($_POST['find'])!=""))  {
+					
+					$find=$_POST['find'];
+					$sql1="select charid from char where charname like '%$find%'";
+					$result = pg_query($sql1) or die("No Results were found for $find");
+			
+						while ($data = pg_fetch_object($result)) {	
+							$row=$data->charid;
+							$search=$search.",".$row;
+							
 						}
-					?>						
+						$search=ltrim($search, ',');
+						$loc="heros.php?rand=$search";
+						
+						Header("Location:$loc");
+					}
+					elseif (isset($_POST['find'])){
+						$rand= rand( 1 , 5 );
+						$loc="heros.php?rand=$rand";
+						Header("Location:$loc");
+					}	
+				?>		
 				</ul>
             </div>
             <!-- /.navbar-collapse -->
         </div>
         <!-- /.container -->
     </nav>
-	
-	<div class="row">	
-		<div class="col-lg-1 col-xs-1">
+	<div class="container">
+		<div class="row" >
+			<div class="col-lg-12 col-xs-12 ">
+				<h1>Hero Page</h1>
+			</div>	
 		</div>
-		<div class="col-lg-10 col-xs-12 ">
-				
-				<br/> <br/>
-				<h3>Hero page</h3>
-					<?php
-					
-					$rand=$_SESSION['rand'];
-					
-					$psql="Select * from char where charid=$rand";
-					$result = pg_query($psql) or die('Query failed: ' . pg_last_error());
-					while ($data= pg_fetch_object($result)){
-							$charname=$data->charname;
-							$charreal=$data->charreal;
-							$pic=$data->picture;
-							$extra=$data->extra;
-							$json=json_decode($extra, true);
-							
-					?>
-					
-					
-					
-					
-					
-					<div  class='col-lg-4 col-xs-12'  >
+	</div>
+	<div class="container">
+		<div class="row" >
+			<form class="form-signin" method="POST">
+				<div class="col-lg-4 col-xs-12 btn" >
+					<button class="btn btn-lg btn-primary btn-block btn" type="submit" name="random" value="random" > Random</button>
+				</div>	
+				<div class="col-lg-4 col-xs-12 btn" >
+					<button class="btn btn-lg btn-primary btn-block" type="submit" name="submit" value="Submit">Submit</button>
+				</div>	
+				<div class="col-lg-4 col-xs-12 btn " >
+					<input class="btn btn-lg btn-primary btn-block btn" type="text" name="find"  placeholder="search by name" >
+				</div>	
+			</form>
+		</div>
+	
+	
+	<?php
+	if ( (($_GET['rand'])=='') &&(($_Get['search'])=='')){
+		echo"
+			<div class='container'>
+				<div class='row' style='border:15px groove #73AD21'>
+						
+						<div class='col-lg-10 col-offset-1'>
+							<h1> No Heros Selected</h1>
+						</div>
+				</div>
+			</div>"	;
+	}	
+	else{
+	
+		$heros=$_GET['rand'];
+		$psql="Select * from char where charid in ($heros)";
+		$result = pg_query($psql) or die('Query failed: ' . pg_last_error());
+		
+		while ($data= pg_fetch_object($result)){
+				$charname=$data->charname;
+				$charreal=$data->charreal;
+				$pic=$data->picture;
+				$extra=$data->extra;
+				$json=json_decode($extra, true);
+				$charname=ucwords($charname);
+				$charreal=ucwords($charreal);
+		echo"	
+			 
+<div class='container'>	
+	<div class='row'>	
+		
+		<div class='col-lg-12 col-xs-12'style='border:15px groove #73AD21'>			
+					<div  class='col-lg-12' >	
+					<div  class='col-lg-4 col-md-12 col-xs-12'  >
 						<h3>Hero </h3>
-							<?php
-							echo"
 							<img src='img/$pic' alt='$charname' style='height:300px'>
 							<li> Hero's name: '$charname'</li>
 							<br/>
 							<li> Real name: '$charreal'</li>
-							";
-							?>
 					</div>
-					
-					<div  class='col-lg-4 col-xs-12' >
-						
-						<h3>Info </h3>
-							<?php
+					<div  class='col-lg-4 col-md-12 col-xs-12' >
+						<h3>Best Comics </h3>	
+					</div>
+					<div  class='col-lg-4 col-md-12 col-xs-12' >
+						<h3>Info </h3>";
 							foreach($json as $key => $value) {
 								$key=ucfirst($key);
-								if (gettype($value)=="array")
+								if (gettype($value)=='array')
 									{
-										$value=implode(",",$value);
+										$value=implode(',',$value);
 										$value=ucfirst($value);
 									}			
-								$value=ucfirst($value);											
-											
-								Echo"<h4>$key :</h4>
-								<p > $value </p>";								
+								$value=ucfirst($value);				
+								echo"			
+								<h4>$key :</h4>
+								<p > $value </p>";			
 							}
-					}
-							?>
-					</div>
 					
-					<div  class='col-lg-4 col-xs-12' >
-						
-						<h3>Best Comics </h3>
+				echo"</div>
 							
-					</div>
 					
-		</div>
+					
+				</div>
+			</div>
+		</div>	
+	</div>
+</div>
+		<br/><br/>
+					
+				";
+				}				
+				}
+						?>
+		
+		
 			<?php 
 				pg_free_result($result);
-
+		
 				// Closing connection
 				pg_close($conn);
 			?>		
-	</div>	
-
-
 	
     <!-- /.container -->
 	<div  id= "bottom" class="navbar navbar-fixed-bottom text-center" >

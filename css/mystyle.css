@@ -56,11 +56,11 @@ h2{
 		
 	}
 	ul{
-	text-align:left;
+		text-align:left;
 	}
 	ul li{
-	list-style: none;
-    display: inline-block;
+		list-style: none;
+		display: inline-block;
 	}
 }
 
@@ -107,4 +107,7 @@ ul li{
 	
 }
 
-.bg {background-attachment:fixed; background-repeat: no-repeat; background-position:top right;}
+.bg {
+	background-attachment:fixed; 
+	background-repeat: no-repeat; 
+	background-position:top right;}
