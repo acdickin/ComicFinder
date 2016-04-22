@@ -80,7 +80,7 @@ require ("classes/config.php");
 						<li>";		
 					}
 				else{
-					Header('Location: index.php');	
+					Header("Location:index.php");
 				}
 				#FOR NAV OF SEARCH AND RANDOM			
 					if(isset($_POST['submit']) && (($_POST['find'])!=""))  {
@@ -99,8 +99,9 @@ require ("classes/config.php");
 						
 						Header("Location:$loc");
 					}
-					elseif (isset($_POST['find'])){
-						$rand= rand( 1 , 5 );
+					elseif (isset($_POST['random'])){
+						$max=$_Session['max'];
+						$rand= mt_rand( 1 , $max);
 						$loc="heros.php?rand=$rand";
 						Header("Location:$loc");
 					}	

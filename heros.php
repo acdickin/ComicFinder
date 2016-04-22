@@ -69,8 +69,9 @@ require ("classes/config.php");
 				</ul>	
 				<ul class="nav navbar-nav navbar-right">
 					
-						<?php
+				<?php
 				session_start();
+				
 				$fullname = $_SESSION['name'];
 				$loginid = $_SESSION['loginid'];		
 				if(isset($_SESSION['name']) && !empty($_SESSION['name'])) {
@@ -101,8 +102,9 @@ require ("classes/config.php");
 						
 						Header("Location:$loc");
 					}
-					elseif (isset($_POST['find'])){
-						$rand= rand( 1 , 5 );
+					elseif (isset($_POST['random'])){
+						$max=$_SESSION['max'];
+						$rand= mt_rand( 1 , $max );
 						$loc="heros.php?rand=$rand";
 						Header("Location:$loc");
 					}	
@@ -168,34 +170,33 @@ require ("classes/config.php");
 	<div class='row'>	
 		
 		<div class='col-lg-12 col-xs-12'style='border:15px groove #73AD21'>			
-					<div  class='col-lg-12' >	
-					<div  class='col-lg-4 col-md-12 col-xs-12'  >
-						<h3>Hero </h3>
-							<img src='img/$pic' alt='$charname' style='height:300px'>
-							<li> Hero's name: '$charname'</li>
-							<br/>
-							<li> Real name: '$charreal'</li>
-					</div>
-					<div  class='col-lg-4 col-md-12 col-xs-12' >
-						<h3>Best Comics </h3>	
-					</div>
-					<div  class='col-lg-4 col-md-12 col-xs-12' >
-						<h3>Info </h3>";
-							foreach($json as $key => $value) {
-								$key=ucfirst($key);
-								if (gettype($value)=='array')
-									{
-										$value=implode(',',$value);
-										$value=ucfirst($value);
-									}			
-								$value=ucfirst($value);				
-								echo"			
-								<h4>$key :</h4>
-								<p > $value </p>";			
-							}
-					
-				echo"</div>
-							
+				<div  class='col-lg-12' >	
+				<div  class='col-lg-4 col-md-12 col-xs-12'  >
+					<h3>$charname</h3>
+						<img src='img/$pic' alt='$charname' style='height:300px'>
+						
+						<li> Real name: '$charreal'</li>
+				</div>
+				<div  class='col-lg-4 col-md-12 col-xs-12' >
+					<h3>Best Comics </h3>	
+				</div>
+				<div  class='col-lg-4 col-md-12 col-xs-12' >
+					<h3>Info </h3>";
+						foreach($json as $key => $value) {
+							$key=ucfirst($key);
+							if (gettype($value)=='array')
+								{
+									$value=implode(',',$value);
+									$value=ucfirst($value);
+								}			
+							$value=ucfirst($value);				
+							echo"			
+							<h4>$key :</h4>
+							<p > $value </p>";			
+						}
+				
+			echo"</div>
+						
 					
 					
 				</div>

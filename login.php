@@ -60,6 +60,7 @@ require ("classes/config.php");
 	$salt="iei0339jfgju3n";
 	$password=sha1($password.$salt);
 	
+	
 	$psql="select firstname, lastname, loginid from login where login = '$login' and hashedpassword='$password' ";
 	$result=pg_query($psql);
 
@@ -75,9 +76,25 @@ require ("classes/config.php");
 				$_SESSION['name']= $fname." ".$lname; 
 				$_SESSION['loginid']=$loginid;
 			}
-			?>
-			<script>location.href=('welcome.php')</script>
-			<?php
+			
+			$max=pg_query("select max(charid) from char");
+			$max=pg_num_rows($max);
+			$_SESSION['max']=$max;
+			
+			
+			$admin="select adminid from admin where loginid =$loginid";
+			$check=pg_query($admin);
+			
+			
+			
+			
+			if(pg_num_rows(($check))>0){
+				$_SESSION['admin']=true;
+			Header('Location: admin.php');				
+			}	
+			else {
+			Header('Location: welcome.php');
+			} 
 		}
 		else{
 			echo"Wrong Username/Password combination";
