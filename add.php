@@ -34,8 +34,10 @@
                     <li>
                         <a href="#">Contact</a>
                     </li>
-				</ul>	
-				<ul class="nav navbar-nav navbar-right">
+				</ul>
+			</div>		
+			</div>
+		</nav>
 	<?php 
 	if(isset($_POST['submit'])){
 	
@@ -60,7 +62,7 @@
 						{
 							
 						}
-						elseif()
+						elseif($strnum==0)
 						{
 							$pair="'".$pair."'";
 						}
@@ -86,12 +88,9 @@
 	}	
 	else{
 	?>
-
-		
+<div class="container">
+	<div class="col-xs-12 col-lg-12 fun center" >	
 		<form action="CreateLogin.php" method="POST" autocomplete="off"> 
-           <div class="col-lg-3 col-xs-1">
-		   </div>
-			<div class="col-xs-10 col-lg-6 fun center" >
 				<h1> Create New User</h1>
 				
 				<label for="inputchar" class="sr-only">Hero's Name</label>
@@ -136,7 +135,7 @@
 					
 					<input type="text" name="pair$i" class="form-control" placeholder="Detail" required >
 					
-					'
+					';
 					$i++;
 				}
 				?>
@@ -151,15 +150,11 @@
 				
 				<button class="btn btn-md btn-primary btn-block" type="submit" name="submit" value="submit">Submit</button>
 				<button class="btn btn-md btn-primary btn-block" type="reset" name="Reset" value="clear it"> Clear Form</button>
-			<!--	<input type="submit" name="submit" value="Submit">
-				<input type="reset" name="reset" value="Clear It">-->
-			</div>
-			<div class="col-lg-3 col-xs-1">
-			</div>
-			
-			
-			
+				<input type="submit" name="submit" value="Submit">
+				<input type="reset" name="reset" value="Clear It">
         </form> 
+    </div>
+</div>
 	<?php
 	}
 		?>

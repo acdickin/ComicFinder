@@ -131,6 +131,7 @@
 				$charreal=ucwords($charreal);
 				$num++;
 				
+				
 		if(isset($_POST['update$num'] )){
 							echo"
 <div class='container' id='$num'>	
